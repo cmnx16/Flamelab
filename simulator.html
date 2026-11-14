@@ -1,0 +1,791 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#081326">
+<title>FlameLab | Combustion Explorer</title>
+
+<style>
+* { box-sizing: border-box; }
+
+:root {
+  color-scheme: dark;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #081326;
+  color: white;
+  line-height: 1.5;
+}
+
+header {
+  text-align: center;
+  padding: 28px 20px;
+  background: #101f3c;
+  border-bottom: 1px solid #253b5c;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: #8cddff;
+  text-decoration: none;
+}
+
+.back-link:hover { text-decoration: underline; }
+
+h1 { color: #58caff; margin: 0 0 8px; }
+header p { margin: 4px 0; }
+
+.container {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.panel {
+  background: #172643;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #253b5c;
+  min-width: 0;
+}
+
+label {
+  display: block;
+  margin-top: 18px;
+  margin-bottom: 7px;
+  font-weight: 600;
+}
+
+select, input[type="range"] { width: 100%; }
+
+select {
+  background: #243955;
+  color: white;
+  padding: 10px;
+  border: 1px solid #55708f;
+  border-radius: 7px;
+}
+
+select:focus-visible, input:focus-visible, button:focus-visible {
+  outline: 3px solid #58caff;
+  outline-offset: 3px;
+}
+
+input[type="range"] {
+  accent-color: #58caff;
+  cursor: pointer;
+}
+
+.range-value {
+  color: #8cddff;
+  font-variant-numeric: tabular-nums;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: clamp(300px, 48vw, 460px);
+  background: #050c19;
+  border-radius: 12px;
+  border: 1px solid #253b5c;
+}
+
+button {
+  padding: 10px;
+  background: #227cb0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 6px 4px 0 0;
+  font: inherit;
+  transition: background-color 140ms ease, transform 140ms ease;
+}
+
+button:hover { background: #329ed6; transform: translateY(-1px); }
+button:active { transform: translateY(0); }
+
+.button-secondary {
+  background: #344c69;
+}
+
+#results {
+  background: #101f3c;
+  padding: 16px;
+  margin-top: 15px;
+  border-radius: 10px;
+  line-height: 1.6;
+}
+
+#flameType { margin: 0 0 8px; color: #8cddff; }
+#explanation, #condition { margin: 8px 0 0; }
+
+.research-panel { grid-column: 1 / -1; }
+.research-intro { max-width: 900px; color: #d3deeb; }
+.comparison-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.comparison-controls label { margin-top: 0; }
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.comparison-card {
+  padding: 18px;
+  background: #101f3c;
+  border: 1px solid #304968;
+  border-radius: 12px;
+  min-width: 0;
+}
+.comparison-card h3 { margin: 0 0 14px; color: #8cddff; }
+.fact-row {
+  padding: 12px 0;
+  border-top: 1px solid #253b5c;
+}
+.fact-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #b4c4d8;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.comparison-summary {
+  margin-top: 16px;
+  padding: 16px;
+  background: #0c1930;
+  border-left: 4px solid #58caff;
+  border-radius: 8px;
+}
+.comparison-summary h3 { margin: 0 0 8px; }
+.comparison-summary p { margin: 6px 0; }
+
+.note {
+  color: #b4c4d8;
+  font-size: 13px;
+}
+
+@media (max-width: 760px) {
+  .container { grid-template-columns: 1fr; padding: 14px; }
+  .panel { padding: 16px; }
+  .research-panel { grid-column: auto; }
+}
+
+@media (max-width: 560px) {
+  .comparison-controls, .comparison-grid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+  button { transition: none; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <a class="back-link" href="index.html#home">← Back to FlameLab home</a>
+  <h1>🔥 FlameLab</h1>
+  <p>Interactive combustion and microgravity explorer</p>
+  <p class="note">For professors, students, aerospace researchers, and engineers.</p>
+  <p class="note">Educational visualization only — not a validated physics model or NASA product.</p>
+</header>
+
+<div class="container">
+
+  <section class="panel" aria-labelledby="controlsTitle">
+    <h2 id="controlsTitle">Experiment variables</h2>
+
+    <label for="gravity">Gravity</label>
+    <select id="gravity" name="gravity">
+      <option value="1">Earth (1 g)</option>
+      <option value="0.38">Mars (0.38 g)</option>
+      <option value="0.165">Moon (0.165 g)</option>
+      <option value="0">Microgravity (0 g)</option>
+    </select>
+
+    <label for="oxygen">Oxygen: <output class="range-value" id="oxygenValue" for="oxygen">21</output>%</label>
+    <input type="range" id="oxygen" name="oxygen"
+           min="10" max="35" value="21" aria-describedby="oxygenHint">
+    <p class="note" id="oxygenHint">Changing oxygen alters the illustrative flame brightness.</p>
+
+    <label for="airflow">Airflow: <output class="range-value" id="airValue" for="airflow">0</output></label>
+    <input type="range" id="airflow" name="airflow"
+           min="0" max="10" value="0" aria-describedby="airflowHint">
+    <p class="note" id="airflowHint">Higher airflow bends and distorts the flame illustration.</p>
+
+    <label for="fuel">Fuel type</label>
+    <select id="fuel" name="fuel">
+      <option value="methane">Methane</option>
+      <option value="propane">Propane</option>
+      <option value="ethanol">Ethanol</option>
+    </select>
+
+    <label for="fuelRate">Fuel supply: <output class="range-value" id="fuelValue" for="fuelRate">50</output>%</label>
+    <input type="range" id="fuelRate" name="fuelRate"
+           min="10" max="100" value="50">
+
+    <h3>Experiment presets</h3>
+    <button type="button" data-preset="earth">Earth flame</button>
+    <button type="button" data-preset="space">Microgravity</button>
+    <button type="button" data-preset="wind">Airflow effect</button>
+    <button type="button" data-preset="low">Low oxygen</button>
+  </section>
+
+  <section class="panel" aria-labelledby="simulationTitle">
+    <h2 id="simulationTitle">Live flame visualization</h2>
+    <p class="note">This adjustable illustration is separate from the real investigations summarized below; it does not reproduce their test data.</p>
+
+    <canvas id="flameCanvas" role="img" aria-label="Animated illustration of a flame changing with the selected experiment conditions">
+      Your browser does not support canvas. Use the controls to read the experiment summary below.
+    </canvas>
+    <button type="button" class="button-secondary" id="animationToggle" aria-pressed="false">Pause animation</button>
+
+    <div id="results" aria-live="polite">
+      <h3 id="flameType">Flame behaviour</h3>
+      <p id="explanation"></p>
+      <p id="condition"></p>
+    </div>
+
+    <p class="note">
+      Flame shape and color are illustrative, not fuel-specific measurements.
+      Real combustion depends on fuel-air mixing, pressure, temperature and burner geometry.
+    </p>
+    <button type="button" data-save-scenario="A">Save as comparison A</button>
+    <button type="button" class="button-secondary" data-save-scenario="B">Save as comparison B</button>
+  </section>
+
+  <section class="panel research-panel" id="scenario-comparison" aria-labelledby="scenarioComparisonTitle">
+    <h2 id="scenarioComparisonTitle">Compare two simulator scenarios</h2>
+    <p class="research-intro">Save two sets of controls above to see which settings match and which differ.</p>
+    <div class="comparison-grid">
+      <article class="comparison-card">
+        <h3>Scenario A</h3>
+        <div id="scenarioA">No scenario saved yet.</div>
+      </article>
+      <article class="comparison-card">
+        <h3>Scenario B</h3>
+        <div id="scenarioB">No scenario saved yet.</div>
+      </article>
+    </div>
+    <div class="comparison-summary" id="scenarioComparisonSummary" aria-live="polite">
+      <h3>Scenario differences</h3>
+      <p>Save both scenarios to see which settings match and which differ.</p>
+    </div>
+  </section>
+
+  <section class="panel research-panel" aria-labelledby="investigationsTitle">
+    <h2 id="investigationsTitle">PSI investigation comparison</h2>
+    <p class="research-intro">
+      Compare research objectives, fuels or samples, test conditions, variables, and measurements.
+      Select any two investigations to see what the supplied summary says they share and how their aims differ.
+    </p>
+
+    <div class="comparison-controls">
+      <div>
+        <label for="investigationA">Investigation A</label>
+        <select id="investigationA">
+          <option value="SAME">SAME</option>
+          <option value="SAME-R">SAME-R</option>
+          <option value="DAFT">DAFT</option>
+          <option value="DAFT-2">DAFT-2</option>
+          <option value="BRE">BRE (ACME)</option>
+        </select>
+      </div>
+      <div>
+        <label for="investigationB">Investigation B</label>
+        <select id="investigationB">
+          <option value="SAME">SAME</option>
+          <option value="SAME-R">SAME-R</option>
+          <option value="DAFT" selected>DAFT</option>
+          <option value="DAFT-2">DAFT-2</option>
+          <option value="BRE">BRE (ACME)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="comparison-grid">
+      <article class="comparison-card" aria-live="polite">
+        <h3 id="investigationAName"></h3>
+        <div id="investigationAFacts"></div>
+      </article>
+      <article class="comparison-card" aria-live="polite">
+        <h3 id="investigationBName"></h3>
+        <div id="investigationBFacts"></div>
+      </article>
+    </div>
+    <div class="comparison-summary" id="comparisonSummary" aria-live="polite"></div>
+    <p class="note">
+      This summary uses only the considerations provided here. Missing run-level details are marked as not specified;
+      check the original PSI records and publications before using them as experimental data.
+      Other PSI combustion investigations may also be relevant to fire safety.
+    </p>
+    <p class="note">
+      Browse source records:
+      <a href="https://psi.nasa.gov/physci/repo/search?q=combustion"
+         target="_blank" rel="noopener noreferrer">
+        NASA PSI combustion search
+      </a>
+    </p>
+  </section>
+
+</div>
+
+<script>
+const canvas = document.getElementById("flameCanvas");
+const ctx = canvas.getContext("2d");
+
+const gravity = document.getElementById("gravity");
+const oxygen = document.getElementById("oxygen");
+const airflow = document.getElementById("airflow");
+const fuel = document.getElementById("fuel");
+const fuelRate = document.getElementById("fuelRate");
+const animationToggle = document.getElementById("animationToggle");
+const investigationA = document.getElementById("investigationA");
+const investigationB = document.getElementById("investigationB");
+
+let frame = 0;
+let animationId = null;
+let isPaused = false;
+
+const fuelStyles = {
+  methane: { height: 1, width: 0.9, flicker: 0.75, inner: [100, 220, 255], outer: [40, 125, 255] },
+  propane: { height: 1.08, width: 1.08, flicker: 1.05, inner: [255, 220, 125], outer: [255, 105, 35] },
+  ethanol: { height: 0.92, width: 0.98, flicker: 0.9, inner: [180, 235, 255], outer: [90, 155, 255] }
+};
+
+const notSpecified = "Not specified in the supplied summary.";
+const savedScenarios = { A: null, B: null };
+const scenarioFields = [
+  ["Gravity", "g", value => value + " g"],
+  ["Oxygen", "o", value => value + "%"],
+  ["Airflow", "a", value => String(value)],
+  ["Fuel", "fuel", value => value.charAt(0).toUpperCase() + value.slice(1)],
+  ["Fuel supply", "rate", value => value + "%"]
+];
+const investigations = {
+  "SAME": {
+    name: "SAME",
+    group: "SAME",
+    target: "smoke",
+    objective: "Study smoke detection in microgravity.",
+    fuelSample: "Smoke/aerosol. Fuel details, sample size, and burner geometry are not specified.",
+    conditions: "Microgravity study; oxygen concentration and airflow values are not specified.",
+    variables: notSpecified,
+    measurements: "A smoke-detection instrument was used; specific measurement channels are not specified.",
+    sensorFamily: "SAME smoke-detection instrument"
+  },
+  "SAME-R": {
+    name: "SAME-R",
+    group: "SAME",
+    target: "smoke",
+    objective: "Study smoke detection; the supplied summary groups SAME and SAME-R in this instrument context.",
+    fuelSample: "Smoke/aerosol. Fuel details, sample size, and burner geometry are not specified.",
+    conditions: "Study conditions and run-level values are not specified.",
+    variables: "Differences between SAME and SAME-R runs are not specified.",
+    measurements: "The SAME/SAME-R smoke-detection instrument was later used for dust detection in DAFT/DAFT-2; specific measurement channels are not specified.",
+    sensorFamily: "SAME smoke-detection instrument"
+  },
+  "DAFT": {
+    name: "DAFT",
+    group: "DAFT",
+    target: "dust",
+    objective: "Assess feasibility of measuring dust and aerosols.",
+    fuelSample: "Dust/aerosol; material details and sample size are not specified. No fuel or burner is described in the supplied summary.",
+    conditions: "Test conditions, including oxygen concentration and airflow, are not specified.",
+    variables: notSpecified,
+    measurements: "An instrument used for smoke detection in SAME/SAME-R was used to detect dust; specific measurement channels are not specified.",
+    sensorFamily: "SAME smoke-detection instrument"
+  },
+  "DAFT-2": {
+    name: "DAFT-2",
+    group: "DAFT",
+    target: "dust",
+    objective: "Assess feasibility of dust and aerosol measurement, as described for DAFT-2 in the supplied summary.",
+    fuelSample: "Dust/aerosol; material details and sample size are not specified. No fuel or burner is described in the supplied summary.",
+    conditions: "Test conditions and run-level values are not specified.",
+    variables: "Differences between DAFT and DAFT-2 runs are not specified.",
+    measurements: "An instrument used for smoke detection in SAME/SAME-R was used to detect dust; specific measurement channels are not specified.",
+    sensorFamily: "SAME smoke-detection instrument"
+  },
+  "BRE": {
+    name: "BRE (ACME)",
+    group: "BRE",
+    target: "material flammability",
+    objective: "Study material flammability as a function of material properties in still atmospheres.",
+    fuelSample: "Gaseous fuels were burned. Material/sample geometry and burner dimensions are not specified.",
+    conditions: "Still atmospheres; oxygen concentration and other gas-mixture values are not specified.",
+    variables: "Material properties were a focus; specific properties and run-to-run values are not specified.",
+    measurements: "Sensor types and measurement channels are not specified.",
+    sensorFamily: null
+  }
+};
+
+const investigationFields = [
+  ["Objective", "objective"],
+  ["Fuel, sample & burner", "fuelSample"],
+  ["Test conditions", "conditions"],
+  ["Variables between tests", "variables"],
+  ["Sensors & measurements", "measurements"]
+];
+
+const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+function getVariables() {
+  return {
+    g: Number(gravity.value),
+    o: Number(oxygen.value),
+    a: Number(airflow.value),
+    fuel: fuel.value,
+    rate: Number(fuelRate.value)
+  };
+}
+
+function updateResults() {
+  const v = getVariables();
+
+  document.getElementById("oxygenValue").textContent = v.o;
+  document.getElementById("airValue").textContent = v.a;
+  document.getElementById("fuelValue").textContent = v.rate;
+
+  let type;
+  let explanation;
+
+  if (v.g < 0.2 && v.a < 3) {
+    type = "Rounded Microgravity Flame";
+    explanation =
+      "Weak buoyancy allows some diffusion flames " +
+      "to become rounder. Oxygen transport is " +
+      "more dependent on diffusion.";
+  }
+  else if (v.a >= 3) {
+    type = "Airflow-Distorted Flame";
+    explanation =
+      "Directed airflow changes oxygen transport " +
+      "and may bend, stretch or destabilize the flame.";
+  }
+  else {
+    type = "Buoyancy-Influenced Flame";
+    explanation =
+      "Gravity creates buoyant convection, " +
+      "which can stretch diffusion flames upward.";
+  }
+
+  if (v.o < 16) {
+    explanation += " The illustration dims at lower oxygen; it does not predict whether a real flame would extinguish.";
+  }
+
+  if (v.o > 28) {
+    explanation +=
+      " Oxygen-enriched environments may " +
+      "increase combustion hazards.";
+  }
+
+  if (v.a >= 8) {
+    explanation += " Strong airflow is shown as a pronounced bend; actual flames may behave differently.";
+  }
+
+  document.getElementById("flameType").textContent = type;
+  document.getElementById("explanation").textContent = explanation;
+
+  document.getElementById("condition").textContent =
+    "Fuel: " + v.fuel.charAt(0).toUpperCase() + v.fuel.slice(1) +
+    " | Oxygen: " + v.o + "%" +
+    " | Airflow: " + v.a +
+    " | Gravity: " + v.g + " g";
+
+  canvas.setAttribute("aria-label",
+    type + ". " + explanation + " Current conditions: " +
+    v.fuel + ", " + v.o + "% oxygen, airflow " + v.a +
+    ", gravity " + v.g + " g.");
+  if (isPaused) animate();
+}
+
+function preset(name) {
+  const presets = {
+    earth: { g: 1, o: 21, a: 0, rate: 50 },
+    space: { g: 0, o: 21, a: 0, rate: 50 },
+    wind: { g: 0, o: 21, a: 7, rate: 60 },
+    low: { g: 0, o: 13, a: 0, rate: 35 }
+  };
+  const values = presets[name];
+  if (!values) throw new Error("Unknown experiment preset: " + name);
+
+  gravity.value = values.g;
+  oxygen.value = values.o;
+  airflow.value = values.a;
+  fuelRate.value = values.rate;
+  updateResults();
+}
+
+function saveScenario(which) {
+  if (which !== "A" && which !== "B") {
+    throw new Error("Scenario must be A or B.");
+  }
+
+  const scenario = getVariables();
+  savedScenarios[which] = scenario;
+
+  const container = document.getElementById("scenario" + which);
+  container.replaceChildren();
+  scenarioFields.forEach(([label, key, format]) => {
+    const line = document.createElement("p");
+    line.textContent = label + ": " + format(scenario[key]);
+    container.appendChild(line);
+  });
+  updateScenarioComparison();
+}
+
+function updateScenarioComparison() {
+  const summary = document.getElementById("scenarioComparisonSummary");
+  summary.replaceChildren();
+
+  const heading = document.createElement("h3");
+  heading.textContent = "Scenario differences";
+  summary.appendChild(heading);
+
+  const first = savedScenarios.A;
+  const second = savedScenarios.B;
+  if (!first || !second) {
+    const message = document.createElement("p");
+    message.textContent = "Save both scenarios to see which settings match and which differ.";
+    summary.appendChild(message);
+    return;
+  }
+
+  const differences = [];
+  const matches = [];
+  scenarioFields.forEach(([label, key, format]) => {
+    const a = format(first[key]);
+    const b = format(second[key]);
+    (a === b ? matches : differences).push(label + ": " + a + " / " + b);
+  });
+
+  const addList = (label, values) => {
+    const title = document.createElement("p");
+    title.textContent = label;
+    summary.appendChild(title);
+    const list = document.createElement("ul");
+    values.forEach(value => {
+      const item = document.createElement("li");
+      item.textContent = value;
+      list.appendChild(item);
+    });
+    summary.appendChild(list);
+  };
+
+  addList("Different settings (A / B):", differences.length ? differences : ["None"]);
+  addList("Matching settings:", matches.length ? matches : ["None"]);
+}
+
+function renderInvestigationCard(investigation, nameElement, factsElement) {
+  nameElement.textContent = investigation.name;
+  factsElement.replaceChildren();
+
+  investigationFields.forEach(([label, key]) => {
+    const row = document.createElement("div");
+    row.className = "fact-row";
+    const heading = document.createElement("span");
+    heading.className = "fact-label";
+    heading.textContent = label;
+    const value = document.createElement("span");
+    value.textContent = investigation[key];
+    row.append(heading, value);
+    factsElement.appendChild(row);
+  });
+}
+
+function updateInvestigationComparison() {
+  const first = investigations[investigationA.value];
+  const second = investigations[investigationB.value];
+
+  renderInvestigationCard(
+    first,
+    document.getElementById("investigationAName"),
+    document.getElementById("investigationAFacts")
+  );
+  renderInvestigationCard(
+    second,
+    document.getElementById("investigationBName"),
+    document.getElementById("investigationBFacts")
+  );
+
+  let summary;
+  if (first.name === second.name) {
+    summary = "Both selections refer to the same investigation. Choose a different study to compare objectives and conditions.";
+  } else if (first.group === second.group) {
+    summary = "These investigations are presented as related entries. The supplied summary does not provide enough run-level metadata to identify their specific similarities or differences.";
+  } else if (first.sensorFamily && first.sensorFamily === second.sensorFamily) {
+    summary = "Shared connection: the SAME/SAME-R smoke-detection instrument was also used for dust detection in DAFT/DAFT-2. The research target differs here (" +
+      first.target + " vs. " + second.target + "). Exact configuration and run-level differences are not specified.";
+  } else {
+    summary = "The research aims differ: " + first.target + " vs. " + second.target +
+      ". The supplied summary does not establish a shared sensor or provide enough detail to compare exact test configurations.";
+  }
+
+  const summaryElement = document.getElementById("comparisonSummary");
+  summaryElement.replaceChildren();
+  const heading = document.createElement("h3");
+  heading.textContent = "Similarities & differences";
+  const text = document.createElement("p");
+  text.textContent = summary;
+  summaryElement.append(heading, text);
+}
+
+function animate() {
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  if (canvas.width !== Math.round(width * dpr) ||
+      canvas.height !== Math.round(height * dpr)) {
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+  }
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.clearRect(0, 0, width, height);
+
+  const v = getVariables();
+
+  const x = width / 2;
+  const base = height * 0.79;
+
+  const rounded = v.g < 0.2 && v.a < 3;
+  const supply = v.rate / 100;
+  const oxygenFactor = 0.25 + 0.75 * ((v.o - 10) / 25);
+  const brightness = clamp(oxygenFactor, 0.2, 1);
+  const fuelStyle = fuelStyles[v.fuel];
+
+  const flicker = Math.sin(frame * 0.08) * 5 * fuelStyle.flicker;
+  const tilt = Math.min(v.a * 8, width * 0.22);
+  const flameScale = (0.72 + supply * 0.55) * (0.72 + oxygenFactor * 0.28);
+
+  // Draw burner
+  ctx.fillStyle = "#607b98";
+  ctx.fillRect(x - 35, base + 5, 70, 10);
+  ctx.fillStyle = "#344c69";
+  ctx.fillRect(x - 12, base - 4, 24, 15);
+
+  // Draw layered translucent flames
+  ctx.save();
+  ctx.globalCompositeOperation = "lighter";
+
+  for (let i = 0; i < 7; i++) {
+    const scale = 1 - i * 0.105;
+    const shift = tilt * (1 - i * 0.1);
+    const jitter = Math.sin(frame * 0.06 + i) * 4 * fuelStyle.flicker;
+
+    ctx.beginPath();
+
+    if (rounded) {
+      const radius = (35 + supply * 45) * fuelStyle.width * flameScale * scale;
+
+      ctx.ellipse(
+        x + shift * 0.4 + jitter,
+        base - radius,
+        radius,
+        radius,
+        0, 0, Math.PI * 2
+      );
+    } else {
+      const flameHeight =
+        (85 + supply * 120) * fuelStyle.height * flameScale *
+        (0.55 + 0.45 * v.g) * scale;
+
+      const flameWidth = (24 + supply * 30) * fuelStyle.width * scale;
+
+      ctx.moveTo(x - flameWidth, base);
+
+      ctx.bezierCurveTo(
+        x - flameWidth * 1.3, base - flameHeight * 0.4,
+        x + shift - flameWidth, base - flameHeight * 0.8,
+        x + shift + flicker, base - flameHeight
+      );
+
+      ctx.bezierCurveTo(
+        x + shift + flameWidth, base - flameHeight * 0.7,
+        x + flameWidth, base - flameHeight * 0.3,
+        x + flameWidth, base
+      );
+
+      ctx.closePath();
+    }
+
+    // Illustrative colour palette
+    const gradient = ctx.createRadialGradient(
+      x + shift * 0.4, base - 65, 3,
+      x + shift * 0.4, base - 65, 135
+    );
+
+    const inner = fuelStyle.inner;
+    const outer = fuelStyle.outer;
+    gradient.addColorStop(0,
+      `rgba(${inner[0]},${inner[1]},${inner[2]},${0.3 * brightness})`);
+    gradient.addColorStop(0.6,
+      `rgba(${outer[0]},${outer[1]},${outer[2]},${0.2 * brightness})`);
+
+    gradient.addColorStop(1, "rgba(0,40,160,0)");
+    ctx.fillStyle = gradient;
+    ctx.fill();
+  }
+
+  ctx.restore();
+
+  ctx.fillStyle = "#a8c2dd";
+  ctx.font = "13px Arial";
+  ctx.fillText("Fuel Source", x + 45, base + 14);
+
+  frame++;
+  if (!isPaused) animationId = requestAnimationFrame(animate);
+}
+
+[gravity, oxygen, airflow, fuel, fuelRate].forEach(input => {
+  input.addEventListener("input", updateResults);
+});
+
+document.querySelectorAll("[data-preset]").forEach(button => {
+  button.addEventListener("click", () => preset(button.dataset.preset));
+});
+
+document.querySelectorAll("[data-save-scenario]").forEach(button => {
+  button.addEventListener("click", () => saveScenario(button.dataset.saveScenario));
+});
+
+animationToggle.addEventListener("click", () => {
+  isPaused = !isPaused;
+  animationToggle.textContent = isPaused ? "Resume animation" : "Pause animation";
+  animationToggle.setAttribute("aria-pressed", String(isPaused));
+  if (isPaused) {
+    cancelAnimationFrame(animationId);
+  } else {
+    animationId = requestAnimationFrame(animate);
+  }
+});
+
+investigationA.addEventListener("change", updateInvestigationComparison);
+investigationB.addEventListener("change", updateInvestigationComparison);
+
+updateResults();
+updateInvestigationComparison();
+animate();
+</script>
+
+</body>
+</html>
+
