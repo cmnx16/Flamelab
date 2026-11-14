@@ -8,253 +8,71 @@
 <title>FlameLab | Combustion Explorer</title>
 
 <style>
-* { box-sizing: border-box; }
+:root{color-scheme:dark;--bg:#0b1015;--panel:#111920;--line:#2b353d;--text:#f2f3ed;--muted:#a4afb6;--orange:#ffa166;--blue:#8dd9ee;font-family:Arial,Helvetica,sans-serif}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);line-height:1.6}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:4px}::selection{background:var(--orange);color:var(--bg)}header{border-bottom:1px solid var(--line)}.topbar{max-width:1400px;margin:auto;padding:23px 32px;display:flex;justify-content:space-between;align-items:center;gap:20px}.brand{color:var(--text);font-weight:800;letter-spacing:-.8px;font-size:21px}.brand span{color:var(--orange)}.back-link{color:var(--muted);font-size:12px}.page-intro{max-width:1400px;margin:auto;padding:42px 32px 30px;display:flex;justify-content:space-between;align-items:end;gap:30px}.eyebrow,.section-kicker{font:10px Consolas,'Courier New',monospace;letter-spacing:1.6px;text-transform:uppercase;color:var(--muted)}.eyebrow::before{content:'';display:inline-block;width:6px;height:6px;background:var(--orange);border-radius:50%;margin:0 9px 1px 0}h1{font-size:clamp(30px,4vw,47px);line-height:1.1;font-weight:500;letter-spacing:-1.8px;margin:14px 0}h2{font-size:19px;line-height:1.3;font-weight:500;letter-spacing:-.4px;margin:0 0 12px}h3{font-size:15px;font-weight:500;margin:0 0 10px}.page-intro p{font-size:13px;color:var(--muted);margin:0}.intro-aside{max-width:285px;text-align:right}.intro-aside a{font-size:12px}.intro-aside p{font-size:10px;margin-top:12px;line-height:1.7}.container{display:grid;grid-template-columns:300px minmax(0,1fr);gap:20px;max-width:1400px;margin:auto;padding:0 32px 56px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:24px;min-width:0}.controls-panel{grid-row:span 1}.section-kicker{display:block;margin-bottom:13px;color:var(--blue)}.controls-panel h2{margin-bottom:22px}.controls-panel label{display:flex;justify-content:space-between;align-items:center;gap:6px;margin:20px 0 8px;font-size:12px;color:#dce4e7;font-weight:500}.controls-panel label:first-of-type{margin-top:0}.range-value{margin-left:auto;color:var(--orange);font:12px Consolas,monospace}select{width:100%;appearance:auto;color:var(--text);background:#19232c;border:1px solid #3b4a54;border-radius:5px;padding:10px 12px;font:12px Arial;min-height:40px;cursor:pointer}input[type=range]{width:100%;accent-color:var(--orange);cursor:pointer;height:18px;margin:0}button{font:12px Arial;color:var(--text);background:#1b2833;border:1px solid #3a4b58;border-radius:5px;padding:11px 15px;cursor:pointer;transition:background .15s,border-color .15s;min-height:40px}button:hover{background:#293d4c;border-color:var(--blue)}.note{font-size:10px;color:var(--muted);line-height:1.7;margin:8px 0 0}.controls-panel h3{padding-top:23px;border-top:1px solid var(--line);margin-top:24px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}.preset-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.preset-grid button{font-size:11px;padding:10px 5px}.preset-grid button:first-child{border-color:#9a6e4f;color:#ffc298}.simulation-panel{display:flex;flex-direction:column}.simulation-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:14px}.simulation-heading h2{margin:0}.status{color:var(--blue);font:9px Consolas,monospace;text-transform:uppercase;letter-spacing:1px;white-space:nowrap}.status::before{content:'●';margin-right:7px}.canvas-wrap{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#080e14;margin-top:18px}.canvas-caption{position:absolute;top:17px;left:18px;font:9px Consolas,monospace;color:#889ca9;letter-spacing:1.5px;pointer-events:none}canvas{display:block;width:100%;height:clamp(310px,31vw,450px);background:radial-gradient(ellipse at 50% 65%,#112c3b55,transparent 60%),linear-gradient(#8dd9ee06 1px,transparent 1px),linear-gradient(90deg,#8dd9ee06 1px,transparent 1px);background-size:auto,32px 32px,32px 32px}#animationToggle{position:absolute;right:14px;top:12px;min-height:30px;font-size:10px;padding:6px 10px;background:#101a24c9}#results{background:#0d151c;border-left:2px solid var(--blue);padding:18px 20px;margin-top:17px;border-radius:0 5px 5px 0}#flameType{font-size:16px;color:var(--text);margin:0 0 7px}#explanation{font-size:12px;color:var(--muted);margin:0;max-width:750px}#condition{font:10px Consolas,monospace;color:var(--blue);line-height:1.8;margin:12px 0 0}.save-actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-top:auto;padding-top:20px}.save-actions button:first-child{background:var(--orange);border-color:var(--orange);color:#251a12}.save-actions button:first-child:hover{background:#ffbd90}.save-actions .hint{font-size:10px;color:var(--muted);margin-left:auto}.research-panel{grid-column:1/-1;padding:28px;margin-top:12px}.research-panel h2{font-size:25px;letter-spacing:-.7px}.research-intro{font-size:12px;color:var(--muted);max-width:780px;margin:10px 0 24px}.comparison-controls,.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.comparison-controls{margin:24px 0 18px}.comparison-controls label{display:block;font-size:11px;color:var(--muted);margin-bottom:8px}.comparison-card{padding:21px;background:#0c141b;border:1px solid var(--line);border-radius:6px;min-width:0}.comparison-card h3{display:flex;align-items:center;gap:9px;color:var(--blue);margin-bottom:17px}.comparison-card h3::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blue)}.comparison-card:nth-child(2) h3{color:var(--orange)}.comparison-card:nth-child(2) h3::before{background:var(--orange)}#scenarioA,#scenarioB{color:var(--muted);font-size:12px}#scenarioA p,#scenarioB p{margin:0;padding:9px 0;border-bottom:1px solid #202b34;font:12px Consolas,monospace}#scenarioA p:last-child,#scenarioB p:last-child{border:0}.comparison-summary{margin-top:18px;padding:19px 22px;background:#17232b;border:1px solid #31434e;border-radius:6px;font-size:12px;color:var(--muted)}.comparison-summary h3{color:var(--text);font-size:13px}.comparison-summary p{margin:7px 0}.comparison-summary ul{display:flex;flex-wrap:wrap;gap:8px 22px;padding-left:16px;font:11px Consolas,monospace}.fact-row{padding:14px 0;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:1.8}.fact-label{display:block;color:#dce4e7;font:9px Consolas,monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}.research-details{margin:0}.research-details summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:15px}.research-details summary::-webkit-details-marker{display:none}.research-details summary::after{content:'+';font-size:25px;color:var(--blue)}.research-details[open] summary::after{content:'−'}.research-details summary h2{margin:0}.research-details summary .section-kicker{margin-bottom:10px}.research-details summary p{margin:10px 0 0;font-size:12px;color:var(--muted)}.lab-footer{max-width:1400px;margin:auto;border-top:1px solid var(--line);padding:25px 32px 32px;display:flex;justify-content:space-between;gap:20px;color:var(--muted);font-size:10px}.lab-footer a{color:var(--muted)}section[id]{scroll-margin-top:25px}
+@media(min-width:1100px){.controls-panel{padding:25px}.simulation-panel{padding:27px}}
+@media(max-width:900px){.container{grid-template-columns:260px minmax(0,1fr);padding:0 20px 35px;gap:14px}.topbar,.page-intro{padding-left:20px;padding-right:20px}.panel{padding:18px}.save-actions .hint{width:100%;margin:0}.status{display:none}.intro-aside{max-width:220px}}
+@media(max-width:700px){.page-intro{display:block;padding-top:30px}.intro-aside{text-align:left;max-width:none;margin-top:18px}.intro-aside p{max-width:440px}.container{grid-template-columns:1fr}.controls-panel{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}.controls-panel>.section-kicker,.controls-panel>h2,.controls-panel>h3,.preset-grid{grid-column:1/-1}.control-group label{margin-top:12px}.preset-grid{grid-template-columns:repeat(4,1fr)}.research-panel{grid-column:auto;padding:22px 18px}.simulation-heading{margin-bottom:8px}canvas{height:330px}.comparison-controls,.comparison-grid{gap:12px}.comparison-card{padding:16px}.lab-footer{padding:22px 20px;flex-direction:column;gap:8px}}
+@media(max-width:450px){.comparison-grid,.comparison-controls{grid-template-columns:1fr}.preset-grid{grid-template-columns:1fr 1fr}.controls-panel{gap:0 15px}.topbar{padding:18px 20px}.brand{font-size:18px}.back-link{font-size:10px}.research-panel h2{font-size:22px}.save-actions button{flex:1;padding:11px 8px}.canvas-caption{max-width:100px;font-size:8px;line-height:1.7}.comparison-summary ul{display:block}.comparison-summary li{margin:7px 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 
-:root {
-  color-scheme: dark;
-  font-family: Arial, sans-serif;
-}
-
-body {
-  margin: 0;
-  background: #081326;
-  color: white;
-  line-height: 1.5;
-}
-
-header {
-  text-align: center;
-  padding: 28px 20px;
-  background: #101f3c;
-  border-bottom: 1px solid #253b5c;
-}
-
-.back-link {
-  display: inline-block;
-  margin-bottom: 12px;
-  color: #8cddff;
-  text-decoration: none;
-}
-
-.back-link:hover { text-decoration: underline; }
-
-h1 { color: #58caff; margin: 0 0 8px; }
-header p { margin: 4px 0; }
-
-.container {
-  display: grid;
-  grid-template-columns: minmax(260px, 320px) minmax(0, 1fr);
-  gap: 20px;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.panel {
-  background: #172643;
-  padding: 20px;
-  border-radius: 14px;
-  border: 1px solid #253b5c;
-  min-width: 0;
-}
-
-label {
-  display: block;
-  margin-top: 18px;
-  margin-bottom: 7px;
-  font-weight: 600;
-}
-
-select, input[type="range"] { width: 100%; }
-
-select {
-  background: #243955;
-  color: white;
-  padding: 10px;
-  border: 1px solid #55708f;
-  border-radius: 7px;
-}
-
-select:focus-visible, input:focus-visible, button:focus-visible {
-  outline: 3px solid #58caff;
-  outline-offset: 3px;
-}
-
-input[type="range"] {
-  accent-color: #58caff;
-  cursor: pointer;
-}
-
-.range-value {
-  color: #8cddff;
-  font-variant-numeric: tabular-nums;
-}
-
-canvas {
-  display: block;
-  width: 100%;
-  height: clamp(300px, 48vw, 460px);
-  background: #050c19;
-  border-radius: 12px;
-  border: 1px solid #253b5c;
-}
-
-button {
-  padding: 10px;
-  background: #227cb0;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 6px 4px 0 0;
-  font: inherit;
-  transition: background-color 140ms ease, transform 140ms ease;
-}
-
-button:hover { background: #329ed6; transform: translateY(-1px); }
-button:active { transform: translateY(0); }
-
-.button-secondary {
-  background: #344c69;
-}
-
-#results {
-  background: #101f3c;
-  padding: 16px;
-  margin-top: 15px;
-  border-radius: 10px;
-  line-height: 1.6;
-}
-
-#flameType { margin: 0 0 8px; color: #8cddff; }
-#explanation, #condition { margin: 8px 0 0; }
-
-.research-panel { grid-column: 1 / -1; }
-.research-intro { max-width: 900px; color: #d3deeb; }
-.comparison-controls {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin: 20px 0;
-}
-.comparison-controls label { margin-top: 0; }
-.comparison-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-.comparison-card {
-  padding: 18px;
-  background: #101f3c;
-  border: 1px solid #304968;
-  border-radius: 12px;
-  min-width: 0;
-}
-.comparison-card h3 { margin: 0 0 14px; color: #8cddff; }
-.fact-row {
-  padding: 12px 0;
-  border-top: 1px solid #253b5c;
-}
-.fact-label {
-  display: block;
-  margin-bottom: 4px;
-  color: #b4c4d8;
-  font-size: 13px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-.comparison-summary {
-  margin-top: 16px;
-  padding: 16px;
-  background: #0c1930;
-  border-left: 4px solid #58caff;
-  border-radius: 8px;
-}
-.comparison-summary h3 { margin: 0 0 8px; }
-.comparison-summary p { margin: 6px 0; }
-
-.note {
-  color: #b4c4d8;
-  font-size: 13px;
-}
-
-@media (max-width: 760px) {
-  .container { grid-template-columns: 1fr; padding: 14px; }
-  .panel { padding: 16px; }
-  .research-panel { grid-column: auto; }
-}
-
-@media (max-width: 560px) {
-  .comparison-controls, .comparison-grid { grid-template-columns: 1fr; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; }
-  button { transition: none; }
-}
 </style>
 </head>
 
 <body>
 
-<header>
-  <a class="back-link" href="index.html#home">← Back to FlameLab home</a>
-  <h1>🔥 FlameLab</h1>
-  <p>Interactive combustion and microgravity explorer</p>
-  <p class="note">For professors, students, aerospace researchers, and engineers.</p>
-  <p class="note">Educational visualization only — not a validated physics model or NASA product.</p>
-</header>
+<header><nav class="topbar" aria-label="Lab navigation"><a class="brand" href="index.html">FLAMELAB<span>.</span></a><a class="back-link" href="index.html">← Back to home</a></nav></header>
+<div class="page-intro"><div><div class="eyebrow">An experiment in perspective</div><h1>Your combustion lab.</h1><p>Change the conditions. Observe the flame. Compare what happens.</p></div><div class="intro-aside"><a href="#scenario-comparison">Compare scenarios ↓</a><p>Educational visualization only.<br>Not a validated physics model or NASA product.</p></div></div>
 
 <div class="container">
 
-  <section class="panel" aria-labelledby="controlsTitle">
-    <h2 id="controlsTitle">Experiment variables</h2>
+  <section class="panel controls-panel" aria-labelledby="controlsTitle">
+    <span class="section-kicker">01 / Set the conditions</span><h2 id="controlsTitle">Experiment variables</h2>
 
-    <label for="gravity">Gravity</label>
+    <div class="control-group">    <label for="gravity">Gravity</label>
     <select id="gravity" name="gravity">
       <option value="1">Earth (1 g)</option>
       <option value="0.38">Mars (0.38 g)</option>
       <option value="0.165">Moon (0.165 g)</option>
       <option value="0">Microgravity (0 g)</option>
-    </select>
+    </select></div>
 
-    <label for="oxygen">Oxygen: <output class="range-value" id="oxygenValue" for="oxygen">21</output>%</label>
+    <div class="control-group">    <label for="oxygen">Oxygen: <output class="range-value" id="oxygenValue" for="oxygen">21</output>%</label>
     <input type="range" id="oxygen" name="oxygen"
            min="10" max="35" value="21" aria-describedby="oxygenHint">
-    <p class="note" id="oxygenHint">Changing oxygen alters the illustrative flame brightness.</p>
+    <p class="note" id="oxygenHint">Changing oxygen alters the illustrative flame brightness.</p></div>
 
-    <label for="airflow">Airflow: <output class="range-value" id="airValue" for="airflow">0</output></label>
+    <div class="control-group">    <label for="airflow">Airflow: <output class="range-value" id="airValue" for="airflow">0</output></label>
     <input type="range" id="airflow" name="airflow"
            min="0" max="10" value="0" aria-describedby="airflowHint">
-    <p class="note" id="airflowHint">Higher airflow bends and distorts the flame illustration.</p>
+    <p class="note" id="airflowHint">Higher airflow bends and distorts the flame illustration.</p></div>
 
-    <label for="fuel">Fuel type</label>
+    <div class="control-group">    <label for="fuel">Fuel type</label>
     <select id="fuel" name="fuel">
       <option value="methane">Methane</option>
       <option value="propane">Propane</option>
       <option value="ethanol">Ethanol</option>
-    </select>
+    </select></div>
 
-    <label for="fuelRate">Fuel supply: <output class="range-value" id="fuelValue" for="fuelRate">50</output>%</label>
+    <div class="control-group">    <label for="fuelRate">Fuel supply: <output class="range-value" id="fuelValue" for="fuelRate">50</output>%</label>
     <input type="range" id="fuelRate" name="fuelRate"
-           min="10" max="100" value="50">
+           min="10" max="100" value="50"></div>
 
     <h3>Experiment presets</h3>
-    <button type="button" data-preset="earth">Earth flame</button>
+    <div class="preset-grid"><button type="button" data-preset="earth">Earth flame</button>
     <button type="button" data-preset="space">Microgravity</button>
     <button type="button" data-preset="wind">Airflow effect</button>
-    <button type="button" data-preset="low">Low oxygen</button>
+    <button type="button" data-preset="low">Low oxygen</button></div>
   </section>
 
-  <section class="panel" aria-labelledby="simulationTitle">
-    <h2 id="simulationTitle">Live flame visualization</h2>
+  <section class="panel simulation-panel" aria-labelledby="simulationTitle">
+    <span class="section-kicker">02 / Observe the response</span><div class="simulation-heading"><h2 id="simulationTitle">Flame visualization</h2><span class="status">Interactive model</span></div>
     <p class="note">This adjustable illustration is separate from the real investigations summarized below; it does not reproduce their test data.</p>
 
-    <canvas id="flameCanvas" role="img" aria-label="Animated illustration of a flame changing with the selected experiment conditions">
+    <div class="canvas-wrap"><span class="canvas-caption">COMBUSTION CHAMBER / ILLUSTRATION</span><canvas id="flameCanvas" role="img" aria-label="Animated illustration of a flame changing with the selected experiment conditions">
       Your browser does not support canvas. Use the controls to read the experiment summary below.
     </canvas>
-    <button type="button" class="button-secondary" id="animationToggle" aria-pressed="false">Pause animation</button>
+    <button type="button" class="button-secondary" id="animationToggle" aria-pressed="false">Pause animation</button></div>
 
     <div id="results" aria-live="polite">
       <h3 id="flameType">Flame behaviour</h3>
@@ -266,12 +84,12 @@ button:active { transform: translateY(0); }
       Flame shape and color are illustrative, not fuel-specific measurements.
       Real combustion depends on fuel-air mixing, pressure, temperature and burner geometry.
     </p>
-    <button type="button" data-save-scenario="A">Save as comparison A</button>
-    <button type="button" class="button-secondary" data-save-scenario="B">Save as comparison B</button>
+    <div class="save-actions"><button type="button" data-save-scenario="A">Save as comparison A</button>
+    <button type="button" class="button-secondary" data-save-scenario="B">Save as comparison B</button><span class="hint">Save two states to compare below ↓</span></div>
   </section>
 
   <section class="panel research-panel" id="scenario-comparison" aria-labelledby="scenarioComparisonTitle">
-    <h2 id="scenarioComparisonTitle">Compare two simulator scenarios</h2>
+    <span class="section-kicker">03 / Spot the difference</span><h2 id="scenarioComparisonTitle">Two scenarios. One comparison.</h2>
     <p class="research-intro">Save two sets of controls above to see which settings match and which differ.</p>
     <div class="comparison-grid">
       <article class="comparison-card">
@@ -290,7 +108,7 @@ button:active { transform: translateY(0); }
   </section>
 
   <section class="panel research-panel" aria-labelledby="investigationsTitle">
-    <h2 id="investigationsTitle">PSI investigation comparison</h2>
+    <details class="research-details"><summary><div><span class="section-kicker">Go deeper / Research library</span><h2 id="investigationsTitle">Compare real investigations.</h2><p>Explore the objectives, conditions, and measurements behind PSI studies.</p></div></summary>
     <p class="research-intro">
       Compare research objectives, fuels or samples, test conditions, variables, and measurements.
       Select any two investigations to see what the supplied summary says they share and how their aims differ.
@@ -342,10 +160,12 @@ button:active { transform: translateY(0); }
         NASA PSI combustion search
       </a>
     </p>
-  </section>
+  </details>
+</section>
 
 </div>
 
+<footer class="lab-footer"><span>FlameLab / NASA Space Apps Challenge Project</span><a href="index.html#research">Explore the scientific background ↗</a></footer>
 <script>
 const canvas = document.getElementById("flameCanvas");
 const ctx = canvas.getContext("2d");
@@ -361,7 +181,7 @@ const investigationB = document.getElementById("investigationB");
 
 let frame = 0;
 let animationId = null;
-let isPaused = false;
+let isPaused = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const fuelStyles = {
   methane: { height: 1, width: 0.9, flicker: 0.75, inner: [100, 220, 255], outer: [40, 125, 255] },
@@ -781,6 +601,8 @@ animationToggle.addEventListener("click", () => {
 investigationA.addEventListener("change", updateInvestigationComparison);
 investigationB.addEventListener("change", updateInvestigationComparison);
 
+animationToggle.textContent = isPaused ? "Resume animation" : "Pause animation";
+ animationToggle.setAttribute("aria-pressed", String(isPaused));
 updateResults();
 updateInvestigationComparison();
 animate();
@@ -788,4 +610,5 @@ animate();
 
 </body>
 </html>
+
 
