@@ -19,6 +19,7 @@
 .control-group+.control-group{margin-top:17px}.lab-notice{border-left:2px solid var(--orange);background:#201c19;padding:16px 20px;font-size:12px;color:#dec6b6;margin:20px 0}.notebook-form{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end;margin:20px 0}.notebook-form label,.notebook-chart>label{font-size:12px;color:var(--muted)}.notebook-form input{width:100%;background:#19232c;border:1px solid #3b4a54;color:var(--text);border-radius:5px;font:12px Arial;padding:12px;margin-top:7px;min-height:40px}.notebook-form select,.notebook-chart select{margin-top:7px}.notebook-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0;font-size:12px}.notebook-form .notebook-actions{grid-column:1/-1;margin:0}.notebook-form button[type=submit]{background:var(--orange);border-color:var(--orange);color:#24180f}.notebook-status{font-size:12px;color:var(--blue);min-height:20px}.table-scroll{overflow:auto;width:100%;border:1px solid var(--line);border-radius:6px}.lab-table{width:100%;min-width:780px;border-collapse:collapse;font-size:12px;text-align:left}.lab-table caption{padding:14px 16px;background:#19252e;text-align:left;color:var(--muted);font-size:11px}.lab-table th{font-size:10px;color:#d8e6ee;letter-spacing:.6px;text-transform:uppercase;background:#0d171f}.lab-table td,.lab-table th{padding:15px;vertical-align:top;border-bottom:1px solid var(--line)}.lab-table td{color:var(--muted);line-height:1.7}.lab-table td:first-child{color:var(--text);min-width:150px;overflow-wrap:anywhere}.lab-table td p{font-size:10px;max-width:250px;margin:6px 0}.lab-table button{padding:7px 10px;min-height:32px}.measurement-details{margin-top:26px;border-top:1px solid var(--line);padding-top:22px}.measurement-details summary, #custom-lab>details summary{cursor:pointer;color:var(--blue);font-size:13px}.notebook-chart{padding:22px;background:#0c151d;border:1px solid var(--line);border-radius:6px;margin:24px 0}.notebook-chart>label{display:block;max-width:450px}.run-bar{display:grid;grid-template-columns:minmax(100px,180px) 1fr 85px;gap:15px;align-items:center;font-size:11px;margin:15px 0}.run-bar span{overflow-wrap:anywhere}.run-track{background:#22313c;height:19px;border-radius:3px;overflow:hidden}.run-fill{background:var(--orange);height:100%}.run-bar strong{font:11px Consolas,monospace;color:var(--blue)}@media(max-width:700px){.notebook-form{grid-template-columns:1fr}.notebook-form .notebook-actions{grid-column:auto}.run-bar{grid-template-columns:90px 1fr 65px;gap:8px}.notebook-chart{padding:17px}.control-group+.control-group{margin-top:0}}
 
 </style>
+<link rel="stylesheet" href="language.css"><script src="language.js" defer></script>
 </head>
 
 <body>
@@ -409,7 +410,7 @@ function animate() {
 
   ctx.fillStyle = "#a8c2dd";
   ctx.font = "13px Arial";
-  ctx.fillText("Fuel Source", x + 45, base + 14);
+  ctx.fillText(window.FlameLang?.t("Fuel Source") || "Fuel Source", x + 45, base + 14);
 
   frame++;
   if (!isPaused) animationId = requestAnimationFrame(animate);
