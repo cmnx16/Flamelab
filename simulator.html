@@ -85,9 +85,9 @@
     </div>
 
     <p class="note">
-      Flame shape and color are illustrative, not fuel-specific measurements.
-      Real combustion depends on fuel-air mixing, pressure, temperature and burner geometry.
+      Colours illustrate fuel differences and possible soot luminosity. Exact shades are not measured predictions. Lower oxygen or higher fuel-supply settings add an illustrative yellow/orange contribution; these controls do not calculate fuel-air ratio or soot production. Gravity changes shape, not the colour palette.
     </p>
+    <p class="note"><a href="https://www.nasa.gov/image-article/aflame/" target="_blank" rel="noopener noreferrer">Why flames can look blue or yellow/orange ↗</a></p>
     <div class="save-actions"><button type="button" data-save-scenario="A">Save as comparison A</button>
     <button type="button" class="button-secondary" data-save-scenario="B">Save as comparison B</button><span class="hint">Save two states to compare below ↓</span></div>
   </section>
@@ -161,6 +161,21 @@ const scenarioFields = [
   ["Fuel supply", "rate", value => value + "%"]
 ];
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+// Educational colour styling, not a spectral or soot model. These RGB values and
+// blend weights are chosen for visibility, not inferred from experimental data.
+// Neither gravity nor directional airflow is treated as a fuel-air mixing ratio.
+function getFlamePalette(v) {
+  const profiles = {
+    methane: {inner:[100,205,255], outer:[25,90,245], warmth:0.02},
+    propane: {inner:[120,225,255], outer:[45,115,255], warmth:0.13},
+    ethanol: {inner:[195,225,255], outer:[110,145,255], warmth:0.01}
+  };
+  const profile = profiles[v.fuel] || profiles.methane;
+  const warmth = clamp(profile.warmth + Math.max(0,21-v.o)/11*.55 + Math.max(0,v.rate-50)/50*.4,0,.85);
+  const blend = (blue,warm) => blue.map((c,i)=>Math.round(c*(1-warmth)+warm[i]*warmth));
+  return {inner:blend(profile.inner,[255,235,135]),outer:blend(profile.outer,[255,125,20]),warmth};
+}
 
 function getVariables() {
   return {
@@ -407,8 +422,7 @@ function animate() {
       x + shift * 0.4, base - 65, 135
     );
 
-    const inner = rounded ? [130, 220, 255] : [255, 230, 130];
-    const outer = rounded ? [30, 115, 255] : [255, 115, 20];
+    const {inner, outer} = getFlamePalette(v);
     gradient.addColorStop(0,
       `rgba(${inner[0]},${inner[1]},${inner[2]},${0.3 * brightness})`);
     gradient.addColorStop(0.6,
