@@ -19,18 +19,19 @@
 .control-group+.control-group{margin-top:17px}.lab-notice{border-left:2px solid var(--orange);background:#201c19;padding:16px 20px;font-size:12px;color:#dec6b6;margin:20px 0}.notebook-form{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end;margin:20px 0}.notebook-form label,.notebook-chart>label{font-size:12px;color:var(--muted)}.notebook-form input{width:100%;background:#19232c;border:1px solid #3b4a54;color:var(--text);border-radius:5px;font:12px Arial;padding:12px;margin-top:7px;min-height:40px}.notebook-form select,.notebook-chart select{margin-top:7px}.notebook-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0;font-size:12px}.notebook-form .notebook-actions{grid-column:1/-1;margin:0}.notebook-form button[type=submit]{background:var(--orange);border-color:var(--orange);color:#24180f}.notebook-status{font-size:12px;color:var(--blue);min-height:20px}.table-scroll{overflow:auto;width:100%;border:1px solid var(--line);border-radius:6px}.lab-table{width:100%;min-width:780px;border-collapse:collapse;font-size:12px;text-align:left}.lab-table caption{padding:14px 16px;background:#19252e;text-align:left;color:var(--muted);font-size:11px}.lab-table th{font-size:10px;color:#d8e6ee;letter-spacing:.6px;text-transform:uppercase;background:#0d171f}.lab-table td,.lab-table th{padding:15px;vertical-align:top;border-bottom:1px solid var(--line)}.lab-table td{color:var(--muted);line-height:1.7}.lab-table td:first-child{color:var(--text);min-width:150px;overflow-wrap:anywhere}.lab-table td p{font-size:10px;max-width:250px;margin:6px 0}.lab-table button{padding:7px 10px;min-height:32px}.measurement-details{margin-top:26px;border-top:1px solid var(--line);padding-top:22px}.measurement-details summary, #custom-lab>details summary{cursor:pointer;color:var(--blue);font-size:13px}.notebook-chart{padding:22px;background:#0c151d;border:1px solid var(--line);border-radius:6px;margin:24px 0}.notebook-chart>label{display:block;max-width:450px}.run-bar{display:grid;grid-template-columns:minmax(100px,180px) 1fr 85px;gap:15px;align-items:center;font-size:11px;margin:15px 0}.run-bar span{overflow-wrap:anywhere}.run-track{background:#22313c;height:19px;border-radius:3px;overflow:hidden}.run-fill{background:var(--orange);height:100%}.run-bar strong{font:11px Consolas,monospace;color:var(--blue)}@media(max-width:700px){.notebook-form{grid-template-columns:1fr}.notebook-form .notebook-actions{grid-column:auto}.run-bar{grid-template-columns:90px 1fr 65px;gap:8px}.notebook-chart{padding:17px}.control-group+.control-group{margin-top:0}}
 
 </style>
-<link rel="stylesheet" href="language.css"><script src="language.js" defer></script>
+<link rel="stylesheet" href="language.css"><link rel="stylesheet" href="simulator-workspace.css"><script src="language.js" defer></script>
 </head>
 
 <body>
 
-<header><nav class="topbar" aria-label="Lab navigation"><a class="brand" href="index.html">FLAMELAB<span>.</span></a><div style="display:flex;gap:18px;flex-wrap:wrap;font-size:12px"><a href="#custom-lab">Custom lab</a><a href="research.html">Evidence</a><a href="research.html#finder">Find a reference</a><a class="back-link" href="index.html">← Home</a></div></nav></header>
-<div class="page-intro"><div><div class="eyebrow">An experiment in perspective</div><h1>Your combustion lab.</h1><p>Change the conditions. Observe the flame. Compare what happens.</p></div><div class="intro-aside"><a href="#scenario-comparison">Compare scenarios ↓</a><p>Educational visualization only.<br>Not a validated physics model or NASA product.</p></div></div>
-
+<a class="skip-link" href="#workspace">Skip to content</a>
+<header class="sidebar"><nav class="topbar" aria-label="Lab navigation"><a class="brand" href="index.html">FLAME<span>LAB</span></a><p class="team-credit" data-i18n-skip>ELIZASTRA</p><div class="side-links"><a href="#workspace" aria-current="page"><span aria-hidden="true">⚗</span>Workspace</a><a href="#custom-lab"><span aria-hidden="true">▤</span>Saved runs</a><a href="research.html"><span aria-hidden="true">▥</span>Research</a><a href="index.html"><span aria-hidden="true">⌂</span>Home</a></div></nav></header>
+<main id="workspace"><div class="page-intro"><div><h1>Combustion workspace</h1><p>Explore. Adjust. Compare.</p></div><div class="workspace-actions"><button type="button" id="reset-controls">↻ <span>Reset</span></button><a class="workspace-primary" href="#run-form">↓ <span>Save run</span></a></div></div>
+<div class="workspace-notice"><span aria-hidden="true">ⓘ</span> <span>Educational visualization only.</span> <span>Not a validated physics model or NASA product.</span></div>
 <div class="container">
 
   <section class="panel controls-panel" aria-labelledby="controlsTitle">
-    <span class="section-kicker">01 / Set the conditions</span><h2 id="controlsTitle">Experiment variables</h2>
+    <span class="section-kicker">Experiment settings</span><h2 id="controlsTitle">Experiment controls</h2>
 
     <div class="control-group">    <label for="gravity">Gravity</label>
     <select id="gravity" name="gravity">
@@ -69,10 +70,10 @@
   </section>
 
   <section class="panel simulation-panel" aria-labelledby="simulationTitle">
-    <span class="section-kicker">02 / Observe the response</span><div class="simulation-heading"><h2 id="simulationTitle">Flame visualization</h2><span class="status">Interactive model</span></div>
+    <span class="section-kicker">Live workspace</span><div class="simulation-heading"><h2 id="simulationTitle">Live illustration</h2><span class="status" id="animation-status">Running</span></div>
     <p class="note">This adjustable illustration is separate from the real investigations summarized below; it does not reproduce their test data.</p>
 
-    <div class="canvas-wrap"><span class="canvas-caption">COMBUSTION CHAMBER / ILLUSTRATION</span><canvas id="flameCanvas" role="img" aria-label="Animated illustration of a flame changing with the selected experiment conditions">
+    <div class="canvas-wrap"><span class="canvas-caption">ILLUSTRATION</span><canvas id="flameCanvas" role="img" aria-label="Animated illustration of a flame changing with the selected experiment conditions">
       Your browser does not support canvas. Use the controls to read the experiment summary below.
     </canvas>
     <button type="button" class="button-secondary" id="animationToggle" aria-pressed="false">Pause animation</button></div>
@@ -92,16 +93,16 @@
   </section>
 
   <section class="panel research-panel" id="scenario-comparison" aria-labelledby="scenarioComparisonTitle">
-    <span class="section-kicker">03 / Spot the difference</span><h2 id="scenarioComparisonTitle">Two scenarios. One comparison.</h2>
+    <span class="section-kicker">03 / Spot the difference</span><h2 id="scenarioComparisonTitle">Scenario comparison</h2>
     <p class="research-intro">Save two sets of controls above to see which settings match and which differ.</p>
     <div class="comparison-grid">
       <article class="comparison-card">
-        <h3>Scenario A</h3>
-        <div id="scenarioA">No scenario saved yet.</div>
+        <h3><span class="scenario-badge">A</span><span>Scenario A</span></h3>
+        <div id="scenarioA">No scenario saved yet.</div><button type="button" data-save-scenario="A">Capture A</button>
       </article>
       <article class="comparison-card">
-        <h3>Scenario B</h3>
-        <div id="scenarioB">No scenario saved yet.</div>
+        <h3><span class="scenario-badge">B</span><span>Scenario B</span></h3>
+        <div id="scenarioB">No scenario saved yet.</div><button type="button" data-save-scenario="B">Capture B</button>
       </article>
     </div>
     <div class="comparison-summary" id="scenarioComparisonSummary" aria-live="polite">
@@ -111,7 +112,7 @@
   </section>
 
   <section class="panel research-panel" id="custom-lab" aria-labelledby="customLabTitle">
-    <span class="section-kicker">04 / Your experiment notebook</span><h2 id="customLabTitle">Ask a question. Save the result.</h2>
+    <span class="section-kicker">04 / Your experiment notebook</span><h2 id="customLabTitle">Experiment notebook</h2>
     <p class="research-intro">Use the experiment controls above to design a virtual run. Save its illustrative response, sweep one variable, or attach your own measured observation. Your notebook is stored only in this browser.</p>
     <div class="lab-notice">Virtual runs report the existing illustration’s behavior. They do not predict temperature, burn duration, extinction, emissions, or material safety. Airflow and fuel supply are arbitrary renderer settings, not physical flow rates.</div>
     <form id="run-form" class="notebook-form"><label>Experiment name<input id="run-name" maxlength="80" placeholder="e.g. Oxygen comparison" required></label><label>Question / notes<input id="run-question" maxlength="300" placeholder="What changes when I vary oxygen?"></label><div class="notebook-actions"><button type="submit">Save current virtual run</button><a href="#controlsTitle">Adjust experiment controls ↑</a></div></form>
@@ -129,7 +130,7 @@
 
 </div>
 
-<footer class="lab-footer"><span>FlameLab / NASA Space Apps Challenge Project</span><a href="research.html">Explore the evidence library ↗</a></footer>
+</main><footer class="lab-footer"><span>FlameLab / <span data-i18n-skip>ELIZASTRA</span></span><a href="research.html">Explore the evidence library ↗</a></footer>
 <script>
 const canvas = document.getElementById("flameCanvas");
 const ctx = canvas.getContext("2d");
@@ -258,6 +259,11 @@ function saveScenario(which) {
 
   const container = document.getElementById("scenario" + which);
   container.replaceChildren();
+  const preview = document.createElement('img');
+  preview.className = 'scenario-preview';
+  preview.alt = 'Saved flame illustration';
+  preview.src = canvas.toDataURL('image/png');
+  container.appendChild(preview);
   scenarioFields.forEach(([label, key, format]) => {
     const line = document.createElement("p");
     line.textContent = label + ": " + format(scenario[key]);
@@ -325,7 +331,7 @@ function animate() {
   const v = getVariables();
 
   const x = width / 2;
-  const base = height * 0.79;
+  const base = height * 0.67;
 
   const rounded = v.g < 0.2 && v.a < 3;
   const supply = v.rate / 100;
@@ -337,11 +343,18 @@ function animate() {
   const tilt = Math.min(v.a * 8, width * 0.22);
   const flameScale = (0.72 + supply * 0.55) * (0.72 + oxygenFactor * 0.28);
 
-  // Draw burner
-  ctx.fillStyle = "#607b98";
-  ctx.fillRect(x - 35, base + 5, 70, 10);
-  ctx.fillStyle = "#344c69";
-  ctx.fillRect(x - 12, base - 4, 24, 15);
+  // Decorative instrument stand; the flame remains a live canvas illustration.
+  const metal = ctx.createLinearGradient(x - 18, 0, x + 18, 0);
+  metal.addColorStop(0, '#3b4652'); metal.addColorStop(.27, '#b4bec8'); metal.addColorStop(.48, '#edf0f2'); metal.addColorStop(.7, '#687786'); metal.addColorStop(1, '#323e4b');
+  ctx.save();
+  ctx.strokeStyle = '#536777';ctx.lineWidth = 1;
+  for (const side of [-1, 1]) {const gx=x+side*Math.min(120,width*.32);ctx.beginPath();ctx.moveTo(gx,base-205);ctx.lineTo(gx,base-10);ctx.moveTo(gx-6,base-205);ctx.lineTo(gx+6,base-205);ctx.moveTo(gx-6,base-10);ctx.lineTo(gx+6,base-10);ctx.stroke();}
+  ctx.strokeStyle = '#245fa0';ctx.lineWidth = 10;ctx.beginPath();ctx.moveTo(x-16,base+71);ctx.bezierCurveTo(x-75,base+65,x-94,base+95,x-115,base+108);ctx.stroke();
+  ctx.fillStyle='#060b10';ctx.fillRect(x-82,base+111,164,8);
+  ctx.fillStyle=metal;ctx.fillRect(x-90,base+97,180,15);ctx.fillRect(x-37,base+88,74,10);ctx.fillRect(x-17,base,34,90);
+  ctx.fillStyle='#18232e';for(let j=-1;j<=1;j++){ctx.beginPath();ctx.ellipse(x+j*9,base+63,2,4,0,0,Math.PI*2);ctx.fill();}
+  ctx.fillStyle='#aab6c1';ctx.fillRect(x-19,base-2,38,5);
+  ctx.restore();
 
   // Draw layered translucent flames
   ctx.save();
@@ -394,8 +407,8 @@ function animate() {
       x + shift * 0.4, base - 65, 135
     );
 
-    const inner = fuelStyle.inner;
-    const outer = fuelStyle.outer;
+    const inner = rounded ? [130, 220, 255] : [255, 230, 130];
+    const outer = rounded ? [30, 115, 255] : [255, 115, 20];
     gradient.addColorStop(0,
       `rgba(${inner[0]},${inner[1]},${inner[2]},${0.3 * brightness})`);
     gradient.addColorStop(0.6,
@@ -408,9 +421,6 @@ function animate() {
 
   ctx.restore();
 
-  ctx.fillStyle = "#a8c2dd";
-  ctx.font = "13px Arial";
-  ctx.fillText(window.FlameLang?.t("Fuel Source") || "Fuel Source", x + 45, base + 14);
 
   frame++;
   if (!isPaused) animationId = requestAnimationFrame(animate);
@@ -430,6 +440,7 @@ document.querySelectorAll("[data-save-scenario]").forEach(button => {
 
 animationToggle.addEventListener("click", () => {
   isPaused = !isPaused;
+  document.getElementById("animation-status").textContent = isPaused ? "Paused" : "Running";
   animationToggle.textContent = isPaused ? "Resume animation" : "Pause animation";
   animationToggle.setAttribute("aria-pressed", String(isPaused));
   if (isPaused) {
@@ -440,6 +451,8 @@ animationToggle.addEventListener("click", () => {
 });
 
 
+document.getElementById('reset-controls').addEventListener('click', () => { fuel.value='methane'; preset('earth'); });
+document.getElementById('animation-status').textContent=isPaused?'Paused':'Running';
 animationToggle.textContent = isPaused ? "Resume animation" : "Pause animation";
  animationToggle.setAttribute("aria-pressed", String(isPaused));
 updateResults();
