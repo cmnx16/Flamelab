@@ -16,12 +16,14 @@
 @media(max-width:450px){.comparison-grid,.comparison-controls{grid-template-columns:1fr}.preset-grid{grid-template-columns:1fr 1fr}.controls-panel{gap:0 15px}.topbar{padding:18px 20px}.brand{font-size:18px}.back-link{font-size:10px}.research-panel h2{font-size:22px}.save-actions button{flex:1;padding:11px 8px}.canvas-caption{max-width:100px;font-size:8px;line-height:1.7}.comparison-summary ul{display:block}.comparison-summary li{margin:7px 0}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 
+.control-group+.control-group{margin-top:17px}.lab-notice{border-left:2px solid var(--orange);background:#201c19;padding:16px 20px;font-size:12px;color:#dec6b6;margin:20px 0}.notebook-form{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end;margin:20px 0}.notebook-form label,.notebook-chart>label{font-size:12px;color:var(--muted)}.notebook-form input{width:100%;background:#19232c;border:1px solid #3b4a54;color:var(--text);border-radius:5px;font:12px Arial;padding:12px;margin-top:7px;min-height:40px}.notebook-form select,.notebook-chart select{margin-top:7px}.notebook-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0;font-size:12px}.notebook-form .notebook-actions{grid-column:1/-1;margin:0}.notebook-form button[type=submit]{background:var(--orange);border-color:var(--orange);color:#24180f}.notebook-status{font-size:12px;color:var(--blue);min-height:20px}.table-scroll{overflow:auto;width:100%;border:1px solid var(--line);border-radius:6px}.lab-table{width:100%;min-width:780px;border-collapse:collapse;font-size:12px;text-align:left}.lab-table caption{padding:14px 16px;background:#19252e;text-align:left;color:var(--muted);font-size:11px}.lab-table th{font-size:10px;color:#d8e6ee;letter-spacing:.6px;text-transform:uppercase;background:#0d171f}.lab-table td,.lab-table th{padding:15px;vertical-align:top;border-bottom:1px solid var(--line)}.lab-table td{color:var(--muted);line-height:1.7}.lab-table td:first-child{color:var(--text);min-width:150px;overflow-wrap:anywhere}.lab-table td p{font-size:10px;max-width:250px;margin:6px 0}.lab-table button{padding:7px 10px;min-height:32px}.measurement-details{margin-top:26px;border-top:1px solid var(--line);padding-top:22px}.measurement-details summary, #custom-lab>details summary{cursor:pointer;color:var(--blue);font-size:13px}.notebook-chart{padding:22px;background:#0c151d;border:1px solid var(--line);border-radius:6px;margin:24px 0}.notebook-chart>label{display:block;max-width:450px}.run-bar{display:grid;grid-template-columns:minmax(100px,180px) 1fr 85px;gap:15px;align-items:center;font-size:11px;margin:15px 0}.run-bar span{overflow-wrap:anywhere}.run-track{background:#22313c;height:19px;border-radius:3px;overflow:hidden}.run-fill{background:var(--orange);height:100%}.run-bar strong{font:11px Consolas,monospace;color:var(--blue)}@media(max-width:700px){.notebook-form{grid-template-columns:1fr}.notebook-form .notebook-actions{grid-column:auto}.run-bar{grid-template-columns:90px 1fr 65px;gap:8px}.notebook-chart{padding:17px}.control-group+.control-group{margin-top:0}}
+
 </style>
 </head>
 
 <body>
 
-<header><nav class="topbar" aria-label="Lab navigation"><a class="brand" href="index.html">FLAMELAB<span>.</span></a><a class="back-link" href="index.html">← Back to home</a></nav></header>
+<header><nav class="topbar" aria-label="Lab navigation"><a class="brand" href="index.html">FLAMELAB<span>.</span></a><div style="display:flex;gap:18px;flex-wrap:wrap;font-size:12px"><a href="#custom-lab">Custom lab</a><a href="research.html">Evidence</a><a href="research.html#finder">Find a reference</a><a class="back-link" href="index.html">← Home</a></div></nav></header>
 <div class="page-intro"><div><div class="eyebrow">An experiment in perspective</div><h1>Your combustion lab.</h1><p>Change the conditions. Observe the flame. Compare what happens.</p></div><div class="intro-aside"><a href="#scenario-comparison">Compare scenarios ↓</a><p>Educational visualization only.<br>Not a validated physics model or NASA product.</p></div></div>
 
 <div class="container">
@@ -107,65 +109,26 @@
     </div>
   </section>
 
-  <section class="panel research-panel" aria-labelledby="investigationsTitle">
-    <details class="research-details"><summary><div><span class="section-kicker">Go deeper / Research library</span><h2 id="investigationsTitle">Compare real investigations.</h2><p>Explore the objectives, conditions, and measurements behind PSI studies.</p></div></summary>
-    <p class="research-intro">
-      Compare research objectives, fuels or samples, test conditions, variables, and measurements.
-      Select any two investigations to see what the supplied summary says they share and how their aims differ.
-    </p>
+  <section class="panel research-panel" id="custom-lab" aria-labelledby="customLabTitle">
+    <span class="section-kicker">04 / Your experiment notebook</span><h2 id="customLabTitle">Ask a question. Save the result.</h2>
+    <p class="research-intro">Use the experiment controls above to design a virtual run. Save its illustrative response, sweep one variable, or attach your own measured observation. Your notebook is stored only in this browser.</p>
+    <div class="lab-notice">Virtual runs report the existing illustration’s behavior. They do not predict temperature, burn duration, extinction, emissions, or material safety. Airflow and fuel supply are arbitrary renderer settings, not physical flow rates.</div>
+    <form id="run-form" class="notebook-form"><label>Experiment name<input id="run-name" maxlength="80" placeholder="e.g. Oxygen comparison" required></label><label>Question / notes<input id="run-question" maxlength="300" placeholder="What changes when I vary oxygen?"></label><div class="notebook-actions"><button type="submit">Save current virtual run</button><a href="#controlsTitle">Adjust experiment controls ↑</a></div></form>
+    <div class="notebook-form"><label>Sweep one variable<select id="sweep-variable"><option value="oxygen">Oxygen: 13%, 21%, 30%</option><option value="gravity">Gravity: 1, 0.38, 0.165, 0 g</option><option value="airflow">Airflow setting: 0, 5, 10</option></select></label><div class="notebook-actions"><button type="button" id="run-sweep" class="button-secondary">Run virtual comparison</button></div></div>
+    <p class="note">A sweep holds all other current controls fixed. These discrete presets are educational renderer settings, not NASA experimental protocols. Up to 50 runs can be stored.</p>
+    <p id="notebook-status" role="status" class="notebook-status"></p>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Custom experiment results, scroll horizontally"><table class="lab-table"><caption>Your saved runs · illustrative results and separately recorded measurements</caption><thead><tr><th>Run / notes</th><th>Inputs</th><th>Illustrative response</th><th>Your measurement</th><th>Actions</th></tr></thead><tbody id="runs-body"><tr><td colspan="5">No runs saved. Set your controls and save a run.</td></tr></tbody></table></div>
+    <div class="notebook-actions"><button type="button" id="export-runs" class="button-secondary">Export notebook CSV ↓</button><button type="button" id="clear-runs" class="button-secondary">Clear this notebook</button></div>
+    <details class="measurement-details"><summary>Add your own measured result</summary><p class="note">Enter an observation you actually measured or sourced. This does not turn the virtual run into a validated prediction. Record the real conditions and uncertainty in the source note.</p><form id="measurement-form" class="notebook-form"><label>Attach to run<select id="measurement-run" required></select></label><label>Measured quantity<select id="measurement-metric"><option value="height">Flame height (mm)</option><option value="duration">Burn duration (s)</option><option value="temperature">Temperature (K)</option><option value="spread">Flame spread rate (mm/s)</option></select></label><label>Measured value<input id="measurement-value" type="number" min="0" max="10000000" step="any" required></label><label>Source, method, conditions & uncertainty<input id="measurement-source" maxlength="500" required placeholder="e.g. Dataset/run ID, instrument, pressure, ± uncertainty"></label><div class="notebook-actions"><button type="submit">Save measured result</button></div></form><p class="note">One measurement per run; saving again replaces that run’s previous measurement.</p></details>
+    <div class="notebook-chart"><label>Compare in a bar chart<select id="chart-metric"><option value="brightness">Illustration brightness index (0–100, not measured)</option><option value="height">User-recorded flame height (mm)</option><option value="duration">User-recorded burn duration (s)</option><option value="temperature">User-recorded temperature (K)</option><option value="spread">User-recorded flame spread rate (mm/s)</option></select></label><div id="run-chart" aria-live="polite"></div><p id="chart-caption" class="note"></p></div>
+    <details><summary>What the virtual result means</summary><p class="note">Model version: illustrative-v1. The renderer uses a rounded shape when gravity is below 0.2 g and airflow below 3; otherwise it shows an elongated or airflow-distorted shape. Brightness index = 100 × [0.25 + 0.75 × (oxygen − 10) / 25], for oxygen from 10–35%. These are drawing rules, not experimentally calibrated combustion equations. A round Moon flame is a renderer choice, not a universal lunar prediction.</p></details>
+    <p><a href="research.html#experiments">Compare with published evidence ↗</a> <span class="note">·</span> <a href="research.html#finder">Find a reference for your requirements ↗</a></p>
+  </section>
 
-    <div class="comparison-controls">
-      <div>
-        <label for="investigationA">Investigation A</label>
-        <select id="investigationA">
-          <option value="SAME">SAME</option>
-          <option value="SAME-R">SAME-R</option>
-          <option value="DAFT">DAFT</option>
-          <option value="DAFT-2">DAFT-2</option>
-          <option value="BRE">BRE (ACME)</option>
-        </select>
-      </div>
-      <div>
-        <label for="investigationB">Investigation B</label>
-        <select id="investigationB">
-          <option value="SAME">SAME</option>
-          <option value="SAME-R">SAME-R</option>
-          <option value="DAFT" selected>DAFT</option>
-          <option value="DAFT-2">DAFT-2</option>
-          <option value="BRE">BRE (ACME)</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="comparison-grid">
-      <article class="comparison-card" aria-live="polite">
-        <h3 id="investigationAName"></h3>
-        <div id="investigationAFacts"></div>
-      </article>
-      <article class="comparison-card" aria-live="polite">
-        <h3 id="investigationBName"></h3>
-        <div id="investigationBFacts"></div>
-      </article>
-    </div>
-    <div class="comparison-summary" id="comparisonSummary" aria-live="polite"></div>
-    <p class="note">
-      This summary uses only the considerations provided here. Missing run-level details are marked as not specified;
-      check the original PSI records and publications before using them as experimental data.
-      Other PSI combustion investigations may also be relevant to fire safety.
-    </p>
-    <p class="note">
-      Browse source records:
-      <a href="https://psi.nasa.gov/physci/repo/search?q=combustion"
-         target="_blank" rel="noopener noreferrer">
-        NASA PSI combustion search
-      </a>
-    </p>
-  </details>
-</section>
 
 </div>
 
-<footer class="lab-footer"><span>FlameLab / NASA Space Apps Challenge Project</span><a href="index.html#research">Explore the scientific background ↗</a></footer>
+<footer class="lab-footer"><span>FlameLab / NASA Space Apps Challenge Project</span><a href="research.html">Explore the evidence library ↗</a></footer>
 <script>
 const canvas = document.getElementById("flameCanvas");
 const ctx = canvas.getContext("2d");
@@ -176,8 +139,6 @@ const airflow = document.getElementById("airflow");
 const fuel = document.getElementById("fuel");
 const fuelRate = document.getElementById("fuelRate");
 const animationToggle = document.getElementById("animationToggle");
-const investigationA = document.getElementById("investigationA");
-const investigationB = document.getElementById("investigationB");
 
 let frame = 0;
 let animationId = null;
@@ -189,7 +150,6 @@ const fuelStyles = {
   ethanol: { height: 0.92, width: 0.98, flicker: 0.9, inner: [180, 235, 255], outer: [90, 155, 255] }
 };
 
-const notSpecified = "Not specified in the supplied summary.";
 const savedScenarios = { A: null, B: null };
 const scenarioFields = [
   ["Gravity", "g", value => value + " g"],
@@ -198,72 +158,6 @@ const scenarioFields = [
   ["Fuel", "fuel", value => value.charAt(0).toUpperCase() + value.slice(1)],
   ["Fuel supply", "rate", value => value + "%"]
 ];
-const investigations = {
-  "SAME": {
-    name: "SAME",
-    group: "SAME",
-    target: "smoke",
-    objective: "Study smoke detection in microgravity.",
-    fuelSample: "Smoke/aerosol. Fuel details, sample size, and burner geometry are not specified.",
-    conditions: "Microgravity study; oxygen concentration and airflow values are not specified.",
-    variables: notSpecified,
-    measurements: "A smoke-detection instrument was used; specific measurement channels are not specified.",
-    sensorFamily: "SAME smoke-detection instrument"
-  },
-  "SAME-R": {
-    name: "SAME-R",
-    group: "SAME",
-    target: "smoke",
-    objective: "Study smoke detection; the supplied summary groups SAME and SAME-R in this instrument context.",
-    fuelSample: "Smoke/aerosol. Fuel details, sample size, and burner geometry are not specified.",
-    conditions: "Study conditions and run-level values are not specified.",
-    variables: "Differences between SAME and SAME-R runs are not specified.",
-    measurements: "The SAME/SAME-R smoke-detection instrument was later used for dust detection in DAFT/DAFT-2; specific measurement channels are not specified.",
-    sensorFamily: "SAME smoke-detection instrument"
-  },
-  "DAFT": {
-    name: "DAFT",
-    group: "DAFT",
-    target: "dust",
-    objective: "Assess feasibility of measuring dust and aerosols.",
-    fuelSample: "Dust/aerosol; material details and sample size are not specified. No fuel or burner is described in the supplied summary.",
-    conditions: "Test conditions, including oxygen concentration and airflow, are not specified.",
-    variables: notSpecified,
-    measurements: "An instrument used for smoke detection in SAME/SAME-R was used to detect dust; specific measurement channels are not specified.",
-    sensorFamily: "SAME smoke-detection instrument"
-  },
-  "DAFT-2": {
-    name: "DAFT-2",
-    group: "DAFT",
-    target: "dust",
-    objective: "Assess feasibility of dust and aerosol measurement, as described for DAFT-2 in the supplied summary.",
-    fuelSample: "Dust/aerosol; material details and sample size are not specified. No fuel or burner is described in the supplied summary.",
-    conditions: "Test conditions and run-level values are not specified.",
-    variables: "Differences between DAFT and DAFT-2 runs are not specified.",
-    measurements: "An instrument used for smoke detection in SAME/SAME-R was used to detect dust; specific measurement channels are not specified.",
-    sensorFamily: "SAME smoke-detection instrument"
-  },
-  "BRE": {
-    name: "BRE (ACME)",
-    group: "BRE",
-    target: "material flammability",
-    objective: "Study material flammability as a function of material properties in still atmospheres.",
-    fuelSample: "Gaseous fuels were burned. Material/sample geometry and burner dimensions are not specified.",
-    conditions: "Still atmospheres; oxygen concentration and other gas-mixture values are not specified.",
-    variables: "Material properties were a focus; specific properties and run-to-run values are not specified.",
-    measurements: "Sensor types and measurement channels are not specified.",
-    sensorFamily: null
-  }
-};
-
-const investigationFields = [
-  ["Objective", "objective"],
-  ["Fuel, sample & burner", "fuelSample"],
-  ["Test conditions", "conditions"],
-  ["Variables between tests", "variables"],
-  ["Sensors & measurements", "measurements"]
-];
-
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
 function getVariables() {
@@ -413,60 +307,6 @@ function updateScenarioComparison() {
   addList("Matching settings:", matches.length ? matches : ["None"]);
 }
 
-function renderInvestigationCard(investigation, nameElement, factsElement) {
-  nameElement.textContent = investigation.name;
-  factsElement.replaceChildren();
-
-  investigationFields.forEach(([label, key]) => {
-    const row = document.createElement("div");
-    row.className = "fact-row";
-    const heading = document.createElement("span");
-    heading.className = "fact-label";
-    heading.textContent = label;
-    const value = document.createElement("span");
-    value.textContent = investigation[key];
-    row.append(heading, value);
-    factsElement.appendChild(row);
-  });
-}
-
-function updateInvestigationComparison() {
-  const first = investigations[investigationA.value];
-  const second = investigations[investigationB.value];
-
-  renderInvestigationCard(
-    first,
-    document.getElementById("investigationAName"),
-    document.getElementById("investigationAFacts")
-  );
-  renderInvestigationCard(
-    second,
-    document.getElementById("investigationBName"),
-    document.getElementById("investigationBFacts")
-  );
-
-  let summary;
-  if (first.name === second.name) {
-    summary = "Both selections refer to the same investigation. Choose a different study to compare objectives and conditions.";
-  } else if (first.group === second.group) {
-    summary = "These investigations are presented as related entries. The supplied summary does not provide enough run-level metadata to identify their specific similarities or differences.";
-  } else if (first.sensorFamily && first.sensorFamily === second.sensorFamily) {
-    summary = "Shared connection: the SAME/SAME-R smoke-detection instrument was also used for dust detection in DAFT/DAFT-2. The research target differs here (" +
-      first.target + " vs. " + second.target + "). Exact configuration and run-level differences are not specified.";
-  } else {
-    summary = "The research aims differ: " + first.target + " vs. " + second.target +
-      ". The supplied summary does not establish a shared sensor or provide enough detail to compare exact test configurations.";
-  }
-
-  const summaryElement = document.getElementById("comparisonSummary");
-  summaryElement.replaceChildren();
-  const heading = document.createElement("h3");
-  heading.textContent = "Similarities & differences";
-  const text = document.createElement("p");
-  text.textContent = summary;
-  summaryElement.append(heading, text);
-}
-
 function animate() {
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
@@ -598,17 +438,15 @@ animationToggle.addEventListener("click", () => {
   }
 });
 
-investigationA.addEventListener("change", updateInvestigationComparison);
-investigationB.addEventListener("change", updateInvestigationComparison);
 
 animationToggle.textContent = isPaused ? "Resume animation" : "Pause animation";
  animationToggle.setAttribute("aria-pressed", String(isPaused));
 updateResults();
-updateInvestigationComparison();
+
 animate();
 </script>
 
+<script src="notebook.js" defer></script>
 </body>
 </html>
-
 
